@@ -50,9 +50,9 @@ if __name__ == "__main__":
                 print(str(data) + " bps")
     except KeyboardInterrupt:
         if len(sys.argv) > 1:
-            fname = sys.argvp[1]
+            fname = sys.argv[1]
         else:
             fname = "default_name"
         io.savemat(fname + ".mat", 
-            {'data_rate' : data_list})
+            {'data_rate' : data_list, 'time_interval' : timestep})
         print("\nExit logger! Save data to matlab file.")
