@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 
+import sys
+from scipy import io
 import time
+
+data_list = []
 
 def transmissionrate(dev, direction, timestep):
     """Return the transmisson rate of a interface under linux
@@ -34,11 +38,21 @@ if __name__ == "__main__":
     try:
         while True:
             data = transmissionrate(devname, "rx", timestep)
+            # append to list to save to matlab file
+            data_list.append(data)
             if data > Kb_th:
-                print(str(data/Kb_th) + "Kbps")
+                print(str(data/Kb_th) + " Kbps")
             elif data > Mb_th:
-                print(str(data/Mb_th) + "Mbps")
+                print(str(data/Mb_th) + " Mbps")
             elif data > Gb_th:
-                print(str(data/Gb_th) + "Gbps")
+                print(str(data/Gb_th) + " Gbps")
+            else:
+                print(str(data) + " bps")
     except KeyboardInterrupt:
-        print("Exit logger!")
+        if len(sys.argv) > 1:
+            fname = sys.argvp[1]
+        else:
+            fname = "default_name"
+        io.savemat(fname + ".mat", 
+            {'data_rate' : data_list})
+        print("\nExit logger! Save data to matlab file.")
