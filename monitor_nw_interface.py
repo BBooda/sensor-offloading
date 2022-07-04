@@ -36,8 +36,12 @@ if __name__ == "__main__":
     Gb_th = 1000000000
 
     try:
+        if len(sys.argv) > 2:
+            log_direction = sys.argv[2]
+        else:
+            log_direction = "rx"
         while True:
-            data = transmissionrate(devname, "rx", timestep)
+            data = transmissionrate(devname, log_direction, timestep)
             # append to list to save to matlab file
             data_list.append(data)
             if data > Kb_th:
