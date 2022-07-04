@@ -40,12 +40,12 @@ if __name__ == "__main__":
             data = transmissionrate(devname, "rx", timestep)
             # append to list to save to matlab file
             data_list.append(data)
-            if data > Kb_th:
-                print(str(data/Kb_th) + " Kbps")
+            if data > Gb_th:
+                print(str(data/Gb_th) + " Gbps")
             elif data > Mb_th:
                 print(str(data/Mb_th) + " Mbps")
-            elif data > Gb_th:
-                print(str(data/Gb_th) + " Gbps")
+            elif data > Kb_th:
+                print(str(data/Kb_th) + " Kbps")
             else:
                 print(str(data) + " bps")
     except KeyboardInterrupt:
