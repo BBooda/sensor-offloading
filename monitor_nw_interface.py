@@ -27,11 +27,14 @@ if __name__ == "__main__":
     devname = "hnet0"
     timestep = 1 # Seconds
     
+    Kb_th = 1000
+    Mb_th = 1000000
+    Gb_th = 1000000000
     while True:
         data = transmissionrate(devname, "rx", timestep)
-        if data > 1000:
-            print(str(data) + "Kbps")
-        elif data > 1000000:
-            print(str(data) + "Mbps")
-        elif data > 1000000000:
-            print(str(data) + "Gbps")
+        if data > Kb_th:
+            print(str(data/Kb_th) + "Kbps")
+        elif data > Mb_th:
+            print(str(data/Mb_th) + "Mbps")
+        elif data > Gb_th:
+            print(str(data/Gb_th) + "Gbps")
