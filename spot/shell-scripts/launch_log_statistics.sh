@@ -2,7 +2,7 @@
 
 SESSION=statistics
 
-TEMP_DIR=/home/spotnuc/temp
+TEMP_DIR=pwd
 SPOT_NODE="spot_node"
 
 export ROS_IPV6=on
