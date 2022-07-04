@@ -17,7 +17,9 @@ def transmissionrate(dev, direction, timestep):
     bytes_after = int(f.read())
     f.close()
     # return (bytes_after-bytes_before)/timestep
-    return (bytes_after-bytes_before)
+    # convert bytes to bits
+    data = (bytes_after-bytes_before)*8
+    return data
 
 
 if __name__ == "__main__":
@@ -26,5 +28,10 @@ if __name__ == "__main__":
     timestep = 1 # Seconds
     
     while True:
-        print(transmissionrate(devname, "rx", timestep))
-        counter += 1
+        data = transmissionrate(devname, "rx", timestep)
+        if data > 1000:
+            print(str(data) + "Kbps")
+        elif data > 1000000:
+            print(str(data) + "Mbps")
+        elif data > 1000000000:
+            print(str(data) + "Gbps")
