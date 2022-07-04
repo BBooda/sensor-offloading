@@ -16,7 +16,8 @@ def transmissionrate(dev, direction, timestep):
     f = open(path, "r")
     bytes_after = int(f.read())
     f.close()
-    return (bytes_after-bytes_before)/timestep
+    # return (bytes_after-bytes_before)/timestep
+    return (bytes_after-bytes_before)
 
 
 if __name__ == "__main__":
@@ -27,4 +28,3 @@ if __name__ == "__main__":
     while True:
         print(transmissionrate(devname, "rx", timestep))
         counter += 1
-        time.sleep(1)
