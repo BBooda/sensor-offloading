@@ -22,7 +22,7 @@ tmux select-pane -t 0
 # tmux send-keys -t 1 "sleep 15; roslaunch realsense2_camera rs_camera_plus_points.launch" C-m
 tmux send-keys -t 2 "sleep 5; roslaunch realsense2_camera rs_camera_plus_points.launch" C-m
 #tmux send-keys -t 2 "sleep 10; source ~/spot_env/bin/activate; cd ~/ros_workspaces/driver_spot_ws/; source devel/setup.bash; roslaunch spot_driver driver.launch" C-m
-# tmux send-keys -t 3 "sleep 5; cd ~/catkin_ws/spot_ws/; source devel/setup.bash; roslaunch velodyne_pointcloud VLP16_points.launch" C-m
-# tmux send-keys -t 4 "sleep 10; cd ~/catkin_ws/spot_ws/; source devel/setup.bash; roslaunch vectornav vectornav.launch" C-m
+tmux send-keys -t 3 "sleep 5; cd ~/catkin_ws/spot_ws/; source devel/setup.bash; roslaunch velodyne_pointcloud VLP16_points.launch" C-m
+tmux send-keys -t 4 "sleep 10; cd ~/catkin_ws/spot_ws/; source devel/setup.bash; roslaunch vectornav vectornav.launch" C-m
 
 tmux -2 attach-session -t $SESSION
