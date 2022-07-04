@@ -27,7 +27,7 @@ tmux send-keys -t 0 "sleep 1; cd $TEMP_DIR; python3 ../../monitor_nw_interface.p
 # tmux send-keys -t 1 "sleep 5; cd $TEMP_DIR; python3 ../log_statistics_v1.py /camera/color/image_raw image_raw_$EDGE_NODE image_raw_$1" C-m
 tmux send-keys -t 2 "sleep 5; cd $TEMP_DIR; python3 ../log_statistics_v1.py /camera/depth/color/points color_points_$EDGE_NODE color_points_$1" C-m
 #tmux send-keys -t 2 "sleep 10; source ~/spot_env/bin/activate; cd ~/ros_workspaces/driver_spot_ws/; source devel/setup.bash; roslaunch spot_driver driver.launch" C-m
-# tmux send-keys -t 3 "sleep 5; cd $TEMP_DIR; python3 ../log_statistics_v1.py /camera/color/image_raw/compressed image_comp_$EDGE_NODE image_comp_$1" C-m
+tmux send-keys -t 3 "sleep 5; cd $TEMP_DIR; python3 ../log_statistics_v1.py /camera/color/image_raw/compressed image_comp_$EDGE_NODE image_comp_$1" C-m
 #tmux send-keys -t 4 "sleep 20; cd ~/catkin_ws/spot_ws/; source devel/setup.bash; roslaunch vectornav vectornav.launch" C-m
 
 tmux -2 attach-session -t $SESSION
