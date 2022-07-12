@@ -16,12 +16,13 @@ signal_strength = []
 cell_location_info = []
 signal_info = []
 time_list = []
+device = "/dev/cdc-wdm1"
 
 # commands to run
 # sudo qmicli -p -d /dev/cdc-wdm0 --nas-get-signal-strength --client-cid=4 --client-no-release-cid
 # sudo qmicli -p -d /dev/cdc-wdm0 --nas-noop --client-no-release-cid
 def get_signal_strength(f_cid):
-    command = ["qmicli", "-p", "-d", "/dev/cdc-wdm0", "--nas-get-signal-strength", 
+    command = ["qmicli", "-p", "-d", device, "--nas-get-signal-strength", 
     "--client-cid={cid}".format(cid=f_cid), "--client-no-release-cid"]
     out = subprocess.run(command, stdout=subprocess.PIPE).stdout.decode('utf-8')
     return out
@@ -31,13 +32,13 @@ def get_time():
     return current_time.timestamp()
 
 def get_signal_info(f_cid):
-    command = ["qmicli", "-p", "-d", "/dev/cdc-wdm0", "--nas-get-signal-info", 
+    command = ["qmicli", "-p", "-d", device, "--nas-get-signal-info", 
     "--client-cid={cid}".format(cid=f_cid), "--client-no-release-cid"]
     out = subprocess.run(command, stdout=subprocess.PIPE).stdout.decode('utf-8')
     return out
 
 def get_signal_cell_location_info(f_cid):
-    command = ["qmicli", "-p", "-d", "/dev/cdc-wdm0", "--nas-get-cell-location-info", 
+    command = ["qmicli", "-p", "-d", device, "--nas-get-cell-location-info", 
     "--client-cid={cid}".format(cid=f_cid), "--client-no-release-cid"]
     out = subprocess.run(command, stdout=subprocess.PIPE).stdout.decode('utf-8')
     return out
