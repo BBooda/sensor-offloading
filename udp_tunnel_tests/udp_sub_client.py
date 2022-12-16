@@ -18,11 +18,13 @@ from sensor_msgs.msg import CompressedImage
 
 class SendData(socket.socket):
     def __init__(self) -> None:
-        addr_info = socket.getaddrinfo("edge", 50007, proto=socket.IPPROTO_UDP)
+        addr_info = socket.getaddrinfo("127.0.0.1", 50007, proto=socket.IPPROTO_UDP)
+
+        print(addr_info)
 
         super().__init__(addr_info[0][0], addr_info[0][1], addr_info[0][2])
 
-        rospy.loginfo("Socket created uri: {sock_uri}, port num: {port_num}".format(sock_uri = "edge", port_num = 50007))
+        rospy.loginfo("Socket created uri: {sock_uri}, port num: {port_num}".format(sock_uri = "check code", port_num = "check code"))
 
     def set_port_and_ip(self, UDP_PORT, UDP_IP):
         self.udp_port = UDP_PORT
@@ -47,6 +49,7 @@ def stack_data(data, socket):
     # # message = bytes(f"{len(message):<{HEADERSIZE}}", 'utf-8')+message
     # # print(message)
     # # send data
+
     socket.send_data(message)
     # socket.send_data(message)
 
@@ -56,11 +59,11 @@ if __name__ == '__main__':
         
         # create socket
         sock = SendData()
-        sock.set_port_and_ip(50007, "edge")
+        sock.set_port_and_ip(50007, "127.0.0.1")
 
         # create subscriber
         # subscriber = rospy.Subscriber('/pixy/vicon/demo_crazyflie6/demo_crazyflie6/odom', Odometry, stack_data)
-        rospy.Subscriber('/pixy/vicon/demo_crazyflie6/demo_crazyflie6/odom', Odometry, stack_data, callback_args=sock)
+        rospy.Subscriber('/pixy/vicon/demo_crazyflie9/demo_crazyflie9/odom', Odometry, stack_data, callback_args=sock)
         # rospy.Subscriber('/camera/color/image_raw/compressed', CompressedImage, stack_data, callback_args=sock)
 
 
