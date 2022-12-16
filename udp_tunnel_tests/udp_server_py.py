@@ -18,6 +18,8 @@ class SocketServer(threading.Thread):
         # sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket = socket.socket(self.addr_info[0][0], self.addr_info[0][1], self.addr_info[0][2])
         self.ros_node = ros_node
+        self.should_run = True
+        self.socket.settimeout(5)        
         
     
     def bind_socket(self):
@@ -25,7 +27,7 @@ class SocketServer(threading.Thread):
         self.socket.bind((self.uri, self.port_num))
 
         try:
-            while True:
+            while self.should_run and not rospy.is_shutdown():
                 # data size is equal to 4096, !!!check if this is the maximum
                 data, addr = self.socket.recvfrom(4096) # buffer 4096 bytes
                 data_variable = pickle.loads(data)
@@ -82,9 +84,14 @@ if __name__ == '__main__':
     # create ROS node
     try:
         pub_node = Pub_Node()
-        socket = SocketServer("127.0.0.1", 50007, pub_node)
-        socket.start()
+        my_socket = SocketServer("127.0.0.1", 50007, pub_node)
+        my_socket.start()
         pub_node.run_node()
+
+        # kill socket thread
+        my_socket.should_run = False
+        my_socket.join()
+        print("Socket thread is shutdown")        
         
     except rospy.ROSInterruptException:
         print("rospy interrupted")
