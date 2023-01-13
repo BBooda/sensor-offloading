@@ -84,7 +84,7 @@ if __name__ == '__main__':
     # create ROS node
     try:
         pub_node = Pub_Node()
-        my_socket = SocketServer("127.0.0.1", 50007, pub_node)
+        my_socket = SocketServer("10.42.1.128", 30001, pub_node)
         my_socket.start()
         pub_node.run_node()
 

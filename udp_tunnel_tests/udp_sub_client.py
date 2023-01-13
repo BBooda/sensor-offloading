@@ -18,7 +18,7 @@ from sensor_msgs.msg import CompressedImage
 
 class SendData(socket.socket):
     def __init__(self) -> None:
-        addr_info = socket.getaddrinfo("127.0.0.1", 50007, proto=socket.IPPROTO_UDP)
+        addr_info = socket.getaddrinfo("130.240.22.39", 32767, proto=socket.IPPROTO_UDP)
 
         print(addr_info)
 
@@ -59,11 +59,11 @@ if __name__ == '__main__':
         
         # create socket
         sock = SendData()
-        sock.set_port_and_ip(50007, "127.0.0.1")
+        sock.set_port_and_ip(32767, "130.240.22.39")
 
         # create subscriber
         # subscriber = rospy.Subscriber('/pixy/vicon/demo_crazyflie6/demo_crazyflie6/odom', Odometry, stack_data)
-        rospy.Subscriber('/pixy/vicon/demo_crazyflie9/demo_crazyflie9/odom', Odometry, stack_data, callback_args=sock)
+        rospy.Subscriber('/pixy/vicon/demo_crazyflie6/demo_crazyflie6/odom', Odometry, stack_data, callback_args=sock)
         # rospy.Subscriber('/camera/color/image_raw/compressed', CompressedImage, stack_data, callback_args=sock)
 
 
