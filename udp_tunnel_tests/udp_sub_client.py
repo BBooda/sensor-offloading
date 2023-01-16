@@ -17,14 +17,14 @@ from sensor_msgs.msg import CompressedImage
 # rospy.init_node(sys.argv[2])
 
 class SendData(socket.socket):
-    def __init__(self) -> None:
-        addr_info = socket.getaddrinfo("130.240.22.39", 32767, proto=socket.IPPROTO_UDP)
+    def __init__(self, port_number, ip) -> None:
+        addr_info = socket.getaddrinfo(str(ip), int(port_number), proto=socket.IPPROTO_UDP)
 
         print(addr_info)
 
         super().__init__(addr_info[0][0], addr_info[0][1], addr_info[0][2])
 
-        rospy.loginfo("Socket created uri: {sock_uri}, port num: {port_num}".format(sock_uri = "check code", port_num = "check code"))
+        rospy.loginfo("Socket created uri: {sock_uri}, port num: {port_num}".format(sock_uri = str(ip), port_num = int(port_number)))
 
     def set_port_and_ip(self, UDP_PORT, UDP_IP):
         self.udp_port = UDP_PORT
@@ -55,15 +55,24 @@ def stack_data(data, socket):
 
 if __name__ == '__main__':
     try:
-        capturer_node = rospy.init_node('udp_send', anonymous=True)
+
+        capturer_node = rospy.init_node('udp_client_' + sys.argv[2], anonymous=True)
         
         # create socket
-        sock = SendData()
-        sock.set_port_and_ip(32767, "130.240.22.39")
+        sock = SendData(int(sys.argv[4]), sys.argv[3])
+        sock.set_port_and_ip(int(sys.argv[4]), sys.argv[3])
 
         # create subscriber
         # subscriber = rospy.Subscriber('/pixy/vicon/demo_crazyflie6/demo_crazyflie6/odom', Odometry, stack_data)
-        rospy.Subscriber('/pixy/vicon/demo_crazyflie6/demo_crazyflie6/odom', Odometry, stack_data, callback_args=sock)
+        
+        if len(sys.argv) >= 2:
+            rospy.loginfo("Topic to subscribe to: " + str(sys.argv[1]))
+            # rospy.loginfo(sys.argv[1])
+            rospy.Subscriber(sys.argv[1], Odometry, stack_data, callback_args=sock)
+            
+        else:
+            rospy.Subscriber('/pixy/vicon/demo_crazyflie6/demo_crazyflie6/odom', Odometry, stack_data, callback_args=sock)
+
         # rospy.Subscriber('/camera/color/image_raw/compressed', CompressedImage, stack_data, callback_args=sock)
 
 

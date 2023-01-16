@@ -6,6 +6,7 @@ from nav_msgs.msg import Odometry
 import rospy, threading
 from sensor_msgs.msg import Image
 from sensor_msgs.msg import CompressedImage
+import sys
 
 # socket class
 class SocketServer(threading.Thread):
@@ -19,7 +20,7 @@ class SocketServer(threading.Thread):
         self.socket = socket.socket(self.addr_info[0][0], self.addr_info[0][1], self.addr_info[0][2])
         self.ros_node = ros_node
         self.should_run = True
-        self.socket.settimeout(5)        
+        self.socket.settimeout(30)        
         
     
     def bind_socket(self):
@@ -48,20 +49,21 @@ class SocketServer(threading.Thread):
 
 class Pub_Node():
 
-    def __init__(self) -> None:
+    def __init__(self, rate = 100, topic_name = "/test_topic", node_name = "test_name") -> None:
         # threading.Thread.__init__(self)
         # set node's rate.
-        self._rate = 100
+        self._rate = rate
         # initialize odometry message
+        self.topic_name = topic_name
         self.message = Odometry()
         self.checksum = 1
-        self.udp_server_node = rospy.init_node('udp_server_node', anonymous=True)
+        self.udp_server_node = rospy.init_node('udp_server_' + node_name, anonymous=True)
     
     def run_node(self):
 
         # initiate node
         n_rate = rospy.Rate(self._rate)
-        self.pub = rospy.Publisher('udp_odometry', Odometry, queue_size=1)
+        self.pub = rospy.Publisher(self.topic_name, Odometry, queue_size=1)
 
         while True and not rospy.is_shutdown():
 
@@ -83,15 +85,17 @@ class Pub_Node():
 if __name__ == '__main__':
     # create ROS node
     try:
-        pub_node = Pub_Node()
-        my_socket = SocketServer("10.42.1.128", 30001, pub_node)
-        my_socket.start()
-        pub_node.run_node()
+        if len(sys.argv) >= 5:
+            rospy.logerr(sys.argv)
+            pub_node = Pub_Node(rate=float(sys.argv[2]), topic_name=sys.argv[1], node_name=sys.argv[3])
+            my_socket = SocketServer(str(sys.argv[4]), int(sys.argv[5]), pub_node)
+            my_socket.start()
+            pub_node.run_node()
 
-        # kill socket thread
-        my_socket.should_run = False
-        my_socket.join()
-        print("Socket thread is shutdown")        
+            # kill socket thread
+            my_socket.should_run = False
+            my_socket.join()
+            print("Socket thread is shutdown")        
         
     except rospy.ROSInterruptException:
         print("rospy interrupted")
