@@ -4,10 +4,10 @@ import sys
 from typing import Dict
 import rospy
 import socket 
-from turtle import pu
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Image
 from sensor_msgs.msg import CompressedImage
+from geometry_msgs.msg import Twist
 
 # parse command line arguments 
 # print(type(sys.argv))
@@ -68,7 +68,7 @@ if __name__ == '__main__':
         if len(sys.argv) >= 2:
             rospy.loginfo("Topic to subscribe to: " + str(sys.argv[1]))
             # rospy.loginfo(sys.argv[1])
-            rospy.Subscriber(sys.argv[1], Odometry, stack_data, callback_args=sock)
+            rospy.Subscriber(sys.argv[1], Twist, stack_data, callback_args=sock)
             
         else:
             rospy.Subscriber('/pixy/vicon/demo_crazyflie6/demo_crazyflie6/odom', Odometry, stack_data, callback_args=sock)
