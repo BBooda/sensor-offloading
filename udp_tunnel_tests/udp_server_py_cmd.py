@@ -6,7 +6,7 @@ from nav_msgs.msg import Odometry
 import rospy, threading
 from sensor_msgs.msg import Image
 from sensor_msgs.msg import CompressedImage
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import TwistStamped
 import sys
 
 # socket class
@@ -56,7 +56,7 @@ class Pub_Node():
         self._rate = rate
         # initialize odometry message
         self.topic_name = topic_name
-        self.message = Twist()
+        self.message = TwistStamped()
         self.checksum = 1
         self.udp_server_node = rospy.init_node('udp_server_' + node_name, anonymous=True)
     
@@ -64,7 +64,7 @@ class Pub_Node():
 
         # initiate node
         n_rate = rospy.Rate(self._rate)
-        self.pub = rospy.Publisher(self.topic_name, Twist, queue_size=1)
+        self.pub = rospy.Publisher(self.topic_name, TwistStamped, queue_size=1)
 
         while True and not rospy.is_shutdown():
 

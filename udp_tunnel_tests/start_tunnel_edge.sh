@@ -7,7 +7,7 @@ SESSION=tunnel_edge
 TEMP_DIR=$(pwd)
 
 SERVINING_IP="130.240.22.40"
-TARGET_IP="130.240.118.133"
+TARGET_IP="130.240.118.134"
 
 tmux -2 new-session -d -s $SESSION
 
